@@ -508,7 +508,7 @@ return view.extend({
 		createSection(_('Device Management (Input: %s / Output: %s)').format(defInput, defOutput),
 			sid => {
 				const [src, dest] = getSrcDest(sid);
-				return (src === '' || dest === '') && uci.get('firewall', sid, 'target') !== 'SNAT';
+				return src === '' || dest === '';
 			},
 			addRuleSection('*', ''), true);
 
@@ -516,7 +516,7 @@ return view.extend({
 		createSection(_('Global Forwarding Rules'),
 			sid => {
 				const [src, dest] = getSrcDest(sid);
-				return src === '*' && dest !== '' && uci.get('firewall', sid, 'target') !== 'SNAT';
+				return src === '*' && dest !== '';
 			},
 			addRuleSection('*', '*'), true);
 
@@ -576,7 +576,7 @@ return view.extend({
 			const title = _('Source Zone: %s [Input: %s] [Forward: %s]').format(srcZone, zp.input, zp.forward);
 			createSection(title, function (sid) {
 				const [src, dest] = getSrcDest(sid);
-				return src === srcZone && dest !== '' && uci.get('firewall', sid, 'target') != 'SNAT';
+				return src === srcZone && dest !== '';
 			}, function (ev) {
 				const config_name = this.uciconfig || this.map.config;
 				const section_id = uci.add(config_name, this.sectiontype);

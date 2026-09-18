@@ -428,7 +428,7 @@ return view.extend({
 			const title = _('Source Zone: %s').format(srcZone);
 			createSection(title, function (sid) {
 				const s_src = uci.get('firewall', sid, 'src');
-				return s_src === srcZone && uci.get('firewall', sid, 'target') != 'SNAT';
+				return s_src === srcZone;
 			}, function (ev) {
 				const config_name = this.uciconfig || this.map.config;
 				const section_id = uci.add(config_name, this.sectiontype);
