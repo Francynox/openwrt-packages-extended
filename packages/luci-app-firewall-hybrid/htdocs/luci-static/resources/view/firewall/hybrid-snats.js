@@ -159,8 +159,6 @@ return view.extend({
 	renderNats([hosts, devs]) {
 		const m = new form.Map('firewall', null, null);
 
-		hybridtool.setupSaveHook(m, 'nat');
-
 		const searchInput = hybridtool.createSearchInput(_('Live Filter (e.g. "wan", "192.168.1")...'));
 
 		const zones = uci.sections('firewall', 'zone');

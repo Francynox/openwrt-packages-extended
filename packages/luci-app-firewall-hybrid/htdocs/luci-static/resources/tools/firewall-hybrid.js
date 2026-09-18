@@ -24,18 +24,6 @@ function renderGroup(className, items, isVertical) {
 	return E('div', { class: `target-group ${className}`, style }, items);
 }
 
-function setupSaveHook(map, sectionType) {
-	const originalSave = map.save;
-	map.save = function (...args) {
-		this.children.forEach(sec => {
-			if (sec.sectiontype === sectionType && typeof sec.cfgsections === 'function') {
-				sec.cfgsections().forEach(sid => uci.move('firewall', sid, null));
-			}
-		});
-		return originalSave.apply(this, args);
-	};
-}
-
 function renderZoneBadge(z, label) {
 	const zName = (z === '*') ? _('Any') : (z || _('Device'));
 	const zStyle = `${fwmodel.getZoneColorStyle(z)}; padding:1px 4px; border-radius:3px;`;
@@ -243,7 +231,6 @@ function createSectionAccordion(title, node, isBlockHeader, hasSections) {
 return baseclass.extend({
 	renderCapsule,
 	renderGroup,
-	setupSaveHook,
 	renderZoneBadge,
 	parseMark,
 	parseHelper,

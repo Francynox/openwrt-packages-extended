@@ -44,8 +44,6 @@ return view.extend({
 	render() {
 		const m = new form.Map('firewall', null, null);
 
-		hybridtool.setupSaveHook(m, 'ipset');
-
 		const searchInput = hybridtool.createSearchInput(_('Live Filter (e.g. "ipv4", "hash", "name")...'));
 
 		const createSection = (title, filterFn, handleAddFn, isBlockHeader = false) => {

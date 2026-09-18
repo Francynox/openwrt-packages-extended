@@ -178,8 +178,6 @@ return view.extend({
 	renderRules([hosts, ctHelpers]) {
 		const m = new form.Map('firewall', null, null);
 
-		hybridtool.setupSaveHook(m, 'rule');
-
 		const searchInput = hybridtool.createSearchInput(_('Live Filter (e.g. "wan", "accept", "192.168.1")...'));
 
 		const zones = uci.sections('firewall', 'zone');
@@ -486,12 +484,6 @@ return view.extend({
 
 
 
-			o = s.taboption('advanced', form.ListValue, '_hybrid_block', _('Global Rule Position'), _('Determines if this global rule evaluates before or after zone rules.'));
-			o.value('', _('PRE-Global (Evaluates Top)'));
-			o.value('post', _('POST-Global (Evaluates Bottom)'));
-			o.modalonly = true;
-			o.depends({ src: '*', dest: /.+/ });
-
 			hybridtool.addTimeRestrictions(s);
 
 			s.render = function () {
@@ -503,12 +495,11 @@ return view.extend({
 
 		const getSrcDest = sid => [uci.get('firewall', sid, 'src') || '', uci.get('firewall', sid, 'dest') || ''];
 
-		const addRuleSection = (src, dest, hb) => function (ev) {
+		const addRuleSection = (src, dest) => function (ev) {
 			const config_name = this.uciconfig || this.map.config;
 			const section_id = uci.add(config_name, this.sectiontype);
 			uci.set(config_name, section_id, 'src', src);
 			uci.set(config_name, section_id, 'dest', dest);
-			if (hb !== undefined) uci.set(config_name, section_id, '_hybrid_block', hb);
 			this.map.addedSection = section_id;
 			this.renderMoreOptionsModal(section_id);
 		};
@@ -522,12 +513,12 @@ return view.extend({
 			addRuleSection('*', ''), true);
 
 		// Block 2
-		createSection(_('Global Pre-Rules'),
+		createSection(_('Global Forwarding Rules'),
 			sid => {
 				const [src, dest] = getSrcDest(sid);
-				return src === '*' && dest !== '' && uci.get('firewall', sid, '_hybrid_block') !== 'post' && uci.get('firewall', sid, 'target') !== 'SNAT';
+				return src === '*' && dest !== '' && uci.get('firewall', sid, 'target') !== 'SNAT';
 			},
-			addRuleSection('*', '*', ''), true);
+			addRuleSection('*', '*'), true);
 
 		// Block 3 Header
 		const h3 = m.section(form.TypedSection, 'rule', _('Zone-specific Forwarding Rules'));
@@ -595,22 +586,6 @@ return view.extend({
 				this.renderMoreOptionsModal(section_id);
 			});
 		});
-
-		// Block 4 Header
-		const h4 = m.section(form.TypedSection, 'rule', _('Global Post-Rules'));
-		h4.anonymous = true;
-		h4.render = function () {
-			return E('h3', { style: 'margin-top: 2em; border-bottom: 2px solid #ccc; padding-bottom: 0.3em;' }, [this.title]);
-		};
-		h4.filter = function () { return false; };
-
-		// Block 4
-		createSection(_('Global Post-Rules (Bottom of Forward Chain)'),
-			sid => {
-				const [src, dest] = getSrcDest(sid);
-				return src === '*' && dest !== '' && uci.get('firewall', sid, '_hybrid_block') === 'post' && uci.get('firewall', sid, 'target') !== 'SNAT';
-			},
-			addRuleSection('*', '*', 'post'), true);
 
 		return m.render().then(mapDom => E('div', { class: 'cbi-map' }, [
 			E('h2', {}, [_('Traffic Rules (Hybrid View)')]),

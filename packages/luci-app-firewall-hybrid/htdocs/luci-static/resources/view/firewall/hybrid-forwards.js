@@ -155,8 +155,6 @@ return view.extend({
 	renderForwards([hosts, ctHelpers, devs]) {
 		const m = new form.Map('firewall', null, null);
 
-		hybridtool.setupSaveHook(m, 'redirect');
-
 		const searchInput = hybridtool.createSearchInput(_('Live Filter (e.g. "wan", "192.168.1")...'));
 
 		const zones = uci.sections('firewall', 'zone');
