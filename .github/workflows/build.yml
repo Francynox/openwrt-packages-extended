@@ -6,7 +6,7 @@ on:
     paths: &shared_paths
       - "packages/**"
       - ".github/**"
-      - "frab_openwrt.pub"
+      - "openwrt-packages-extended.pub"
   pull_request:
     branches: [main]
     paths: *shared_paths
@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p public/packages/${{ matrix.arch }}
           cp -r bin/packages/*/action/* public/packages/${{ matrix.arch }}/
-          cp frab_openwrt.pub public/
+          cp openwrt-packages-extended.pub public/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7

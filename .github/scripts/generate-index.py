@@ -21,7 +21,7 @@ def main():
         print("Error: public directory not found.")
         return
 
-    repo = os.environ.get('GITHUB_REPOSITORY', 'frab-openwrt-repository')
+    repo = os.environ.get('GITHUB_REPOSITORY', 'openwrt-packages-extended')
     repo_name = repo.split('/')[-1] if '/' in repo else repo
 
     rows = []

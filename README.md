@@ -1,15 +1,15 @@
-# Custom OpenWrt Package Repository
+# OpenWrt Packages Extended
 
-This repository contains custom OpenWrt packages.
+This repository contains extended and custom OpenWrt packages.
 
 ## Adding to OpenWrt
 
 ### 1. Download & Add Public Key
 
-Download the signing key (`frab_openwrt.pub`) to trust packages from this repository:
+Download the signing key (`openwrt-packages-extended.pub`) to trust packages from this repository:
 
 ```bash
-wget -O /etc/apk/keys/frab_openwrt.pub https://francynox.github.io/frab-openwrt-repository/frab_openwrt.pub
+wget -O /etc/apk/keys/openwrt-packages-extended.pub https://francynox.github.io/openwrt-packages-extended/openwrt-packages-extended.pub
 ```
 
 ### 2. Configure Repository Source
@@ -17,7 +17,7 @@ wget -O /etc/apk/keys/frab_openwrt.pub https://francynox.github.io/frab-openwrt-
 Add the repository URL corresponding to your OpenWrt architecture:
 
 ```text
-https://francynox.github.io/frab-openwrt-repository/packages/<architecture>/packages.adb
+https://francynox.github.io/openwrt-packages-extended/packages/<architecture>/packages.adb
 ```
 
 Update package lists:

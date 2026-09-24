@@ -1,3 +1,4 @@
 bin
 logs
-frab_openwrt.pem
+*.pem
+openwrt-packages-extended.pem
